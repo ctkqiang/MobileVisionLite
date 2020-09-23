@@ -31,5 +31,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.wonderkiln:camerakit:0.13.1'
     implementation 'org.tensorflow:tensorflow-lite:+'
-
+    implementation 'com.karumi:dexter:4.2.0'
 }
