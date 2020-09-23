@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">计算机视觉 Tensorflow</string>
+    <string name="app_name">計算機視覺Tensorflow lite</string>
+    <string name="toggle_camera">切換相機</string>
+    <string name="detect_object">檢測物體</string>
 </resources>
