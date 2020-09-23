@@ -25,6 +25,7 @@ import com.wonderkiln.camerakit.CameraKitImage;
 import com.wonderkiln.camerakit.CameraKitVideo;
 import com.wonderkiln.camerakit.CameraView;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -75,7 +76,44 @@ public class VisionActivity extends AppCompatActivity {
         btn_Detect_Object = findViewById(R.id.buttonDetectObject);
     }
 
-    public void logic_component() {
+    private void initTensorFlowAndLoadModel() {
+
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    classifier = ImageClassifierTensorflow.create(
+                            getAssets(),
+                            MODEL_PATH,
+                            LABEL_PATH,
+                            INPUT_SIZE,
+                            QUANT);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                show_btn();
+            }
+        });
+
+    }
+
+    private void show_btn() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                btn_Detect_Object.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ui_component();
+
         cameraView.addCameraKitListener(new CameraKitEventListener() {
             @Override
             public void onEvent(CameraKitEvent cameraKitEvent) {
@@ -119,45 +157,6 @@ public class VisionActivity extends AppCompatActivity {
             }
         });
         initTensorFlowAndLoadModel();
-    }
-
-    private void initTensorFlowAndLoadModel() {
-
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    classifier = ImageClassifierTensorflow.create(
-                            getAssets(),
-                            MODEL_PATH,
-                            LABEL_PATH,
-                            INPUT_SIZE,
-                            QUANT);
-                    show_btn();
-                } catch (final Exception e) {
-                    throw new RuntimeException("Error initializing TensorFlow!", e);
-                }
-            }
-        });
-
-    }
-
-    private void show_btn() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                btn_Detect_Object.setVisibility(View.VISIBLE);
-            }
-        });
-    }
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ui_component();
-        logic_component();
     }
 
     @Override

@@ -68,7 +68,7 @@ public class Classifier {
 
 
     List<Recognition> recognizeImage(Bitmap bitmap) {
-        return null;
+        return recognizeImage(bitmap);
     }
 
     void close() {
